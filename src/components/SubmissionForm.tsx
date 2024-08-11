@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Submission } from '../models/Submission';
+import '../styles/global.css'; // Ensure this is imported
 
 interface SubmissionFormProps {
   submission: Submission | null;
@@ -63,40 +64,67 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>{submission ? 'Edit Submission' : 'Add New Submission'}</h2>
-      <input
-        type="text"
-        value={journal}
-        onChange={(e) => setJournal(e.target.value)}
-        placeholder="Journal Name"
-      />
-      <input
-        type="date"
-        value={submissionDate}
-        onChange={(e) => setSubmissionDate(e.target.value)}
-      />
-      <input
-        type="text"
-        value={pieces}
-        onChange={(e) => setPieces(e.target.value)}
-        placeholder="Pieces (comma-separated)"
-      />
-      <input
-        type="date"
-        value={responseDate}
-        onChange={(e) => setResponseDate(e.target.value)}
-      />
-      <select
-        value={responseDecision}
-        onChange={(e) => setResponseDecision(e.target.value)}
-      >
-        <option value="">Select Response Decision</option>
-        <option value="Accepted">Accepted</option>
-        <option value="Declined">Declined</option>
-      </select>
-      <button onClick={handleSave}>{submission ? 'Save' : 'Add'}</button>
-      <button onClick={onCancel}>Cancel</button>
+      <div className="form-group">
+        <label htmlFor="journal">Journal Name</label>
+        <input
+          id="journal"
+          type="text"
+          value={journal}
+          onChange={(e) => setJournal(e.target.value)}
+          placeholder="Journal Name"
+          className="input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="submissionDate">Submission Date</label>
+        <input
+          id="submissionDate"
+          type="date"
+          value={submissionDate}
+          onChange={(e) => setSubmissionDate(e.target.value)}
+          className="input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="pieces">Pieces (comma-separated)</label>
+        <input
+          id="pieces"
+          type="text"
+          value={pieces}
+          onChange={(e) => setPieces(e.target.value)}
+          placeholder="Pieces (comma-separated)"
+          className="input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="responseDate">Response Date</label>
+        <input
+          id="responseDate"
+          type="date"
+          value={responseDate}
+          onChange={(e) => setResponseDate(e.target.value)}
+          className="input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="responseDecision">Response Decision</label>
+        <select
+          id="responseDecision"
+          value={responseDecision}
+          onChange={(e) => setResponseDecision(e.target.value)}
+          className="select"
+        >
+          <option value="">Select Response Decision</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Declined">Declined</option>
+        </select>
+      </div>
+      <div className="button-group">
+        <button className="button" onClick={handleSave}>{submission ? 'Save' : 'Add'}</button>
+        <button className="button button-cancel" onClick={onCancel}>Cancel</button>
+      </div>
     </div>
   );
 };

@@ -2,52 +2,45 @@ import React, { useState } from 'react';
 import { Submission } from './models/Submission';
 import SubmissionTable from './components/SubmissionTable';
 import SubmissionForm from './components/SubmissionForm';
+import './styles/global.css'; // Ensure this is imported
 
 const App: React.FC = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
-  const [showForm, setShowForm] = useState<boolean>(false);
+
+  const handleSave = (submission: Submission) => {
+    setSubmissions(prev =>
+      prev.some(s => s.id === submission.id)
+        ? prev.map(s => (s.id === submission.id ? submission : s))
+        : [...prev, submission]
+    );
+    setEditingSubmission(null);
+  };
 
   const handleEdit = (submission: Submission) => {
     setEditingSubmission(submission);
-    setShowForm(true);
   };
 
-  const handleSave = (updatedSubmission: Submission) => {
-    setSubmissions(submissions.map(sub =>
-      sub.id === updatedSubmission.id ? updatedSubmission : sub
-    ));
-    setEditingSubmission(null);
-    setShowForm(false);
-  };
-
-  const handleAdd = (newSubmission: Submission) => {
-    setSubmissions([...submissions, newSubmission]);
-    setShowForm(false);
+  const handleDelete = (id: string) => {
+    setSubmissions(prev => prev.filter(s => s.id !== id));
   };
 
   const handleCancel = () => {
     setEditingSubmission(null);
-    setShowForm(false);
   };
 
   return (
-    <div>
-      {showForm ? (
-        <SubmissionForm
-          submission={editingSubmission}
-          onSave={editingSubmission ? handleSave : handleAdd}
-          onCancel={handleCancel}
-        />
-      ) : (
-        <>
-          <button onClick={() => setShowForm(true)}>Add New Submission</button>
-          <SubmissionTable
-            submissions={submissions}
-            onEdit={handleEdit}
-          />
-        </>
-      )}
+    <div className="container">
+      <SubmissionTable
+        submissions={submissions}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+      <SubmissionForm
+        submission={editingSubmission}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
     </div>
   );
 };

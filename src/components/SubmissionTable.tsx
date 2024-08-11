@@ -1,54 +1,82 @@
-import React, { useState } from 'react';
-import { Submission } from '../models/Submission'; // Ensure the path is correct
+import React from 'react';
+import { CompactTable } from '@table-library/react-table-library/compact';
+import { useTheme } from '@table-library/react-table-library/theme';
+import { getTheme } from '@table-library/react-table-library/baseline';
+import { Submission } from '../models/Submission';
+import '../styles/global.css'; // Ensure this is imported
+
+// Import SVGs
+import EditIcon from '../icons/edit.svg';
+import DeleteIcon from '../icons/delete.svg';
 
 interface SubmissionTableProps {
   submissions: Submission[];
   onEdit: (submission: Submission) => void;
+  onDelete: (id: string) => void;
 }
 
-const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit }) => {
-  const [filter, setFilter] = useState<string>('');
+const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, onDelete }) => {
+  const data = { nodes: submissions };
 
-  const filteredSubmissions = submissions.filter(sub =>
-    sub.journal.toLowerCase().includes(filter.toLowerCase()) ||
-    sub.pieces.some(piece => piece.toLowerCase().includes(filter.toLowerCase()))
-  );
+  const theme = useTheme([
+    getTheme(),
+    {
+      HeaderRow: `
+        background-color: #eaf5fd;
+      `,
+      Row: `
+        &:nth-of-type(odd) {
+          background-color: #d2e9fb;
+        }
+
+        &:nth-of-type(even) {
+          background-color: #eaf5fd;
+        }
+      `,
+    },
+  ]);
+
+  const COLUMNS = [
+    { label: 'Journal', renderCell: (item: Submission) => item.journal },
+    {
+      label: 'Submission Date',
+      renderCell: (item: Submission) =>
+        item.submissionDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }),
+    },
+    { label: 'Pieces', renderCell: (item: Submission) => item.pieces.join(', ') },
+    {
+      label: 'Response Date',
+      renderCell: (item: Submission) =>
+        item.responseDate ? item.responseDate.toLocaleDateString('en-US') : '',
+    },
+    { label: 'Response Decision', renderCell: (item: Submission) => item.responseDecision || 'N/A' },
+    {
+      label: 'Actions',
+      renderCell: (item: Submission) => (
+        <div className="actions">
+          <img
+            src={EditIcon}
+            alt="Edit"
+            className="icon-button edit-icon"
+            onClick={() => onEdit(item)}
+          />
+          <img
+            src={DeleteIcon}
+            alt="Delete"
+            className="icon-button delete-icon"
+            onClick={() => onDelete(item.id)}
+          />
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Filter by journal or piece"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
-      <table>
-        <thead>
-          <tr>
-            <th>Journal</th>
-            <th>Submission Date</th>
-            <th>Pieces</th>
-            <th>Response Date</th>
-            <th>Response Decision</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredSubmissions.map(submission => (
-            <tr key={submission.id}>
-              <td>{submission.journal}</td>
-              <td>{new Date(submission.submissionDate).toLocaleDateString()}</td>
-              <td>{submission.pieces.join(', ')}</td>
-              <td>{submission.responseDate ? new Date(submission.responseDate).toLocaleDateString() : 'Pending'}</td>
-              <td>{submission.responseDecision || 'Pending'}</td>
-              <td>
-                <button onClick={() => onEdit(submission)}>Edit</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <CompactTable columns={COLUMNS} data={data} theme={theme} />
   );
 };
 

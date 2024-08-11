@@ -1,0 +1,178 @@
+/* Global Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tr:hover {
+  background-color: #e1e1e1;
+}
+
+/* Buttons */
+.button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/* Form Inputs */
+.input, .select, .textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+/* Global Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Form Container */
+.form-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 40px auto;
+  box-sizing: border-box;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Input and Select Styles */
+.input, .select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.input:focus, .select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Button Styles */
+.button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-right: 10px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button-cancel {
+  background-color: #6c757d;
+}
+
+.button-cancel:hover {
+  background-color: #5a6268;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ICONS */
+.icon-button {
+  cursor: pointer;
+  width: 24px; /* Adjust size as needed */
+  height: 24px; /* Adjust size as needed */
+  margin: 0 8px; /* Space out icons */
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.icon-button:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.edit-icon{
+  width: 24;
+  height: 24;
+}
+
+.delete-icon{
+  width: 24;
+  height: 10;
+  color: #ff0000;
+}
