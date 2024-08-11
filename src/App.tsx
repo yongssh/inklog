@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Submission } from './models/Submission';
+import SubmissionTable from './components/SubmissionTable';
+import SubmissionForm from './components/SubmissionForm';
 
-function App() {
+const App: React.FC = () => {
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
+  const [showForm, setShowForm] = useState<boolean>(false);
+
+  const handleEdit = (submission: Submission) => {
+    setEditingSubmission(submission);
+    setShowForm(true);
+  };
+
+  const handleSave = (updatedSubmission: Submission) => {
+    setSubmissions(submissions.map(sub =>
+      sub.id === updatedSubmission.id ? updatedSubmission : sub
+    ));
+    setEditingSubmission(null);
+    setShowForm(false);
+  };
+
+  const handleAdd = (newSubmission: Submission) => {
+    setSubmissions([...submissions, newSubmission]);
+    setShowForm(false);
+  };
+
+  const handleCancel = () => {
+    setEditingSubmission(null);
+    setShowForm(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {showForm ? (
+        <SubmissionForm
+          submission={editingSubmission}
+          onSave={editingSubmission ? handleSave : handleAdd}
+          onCancel={handleCancel}
+        />
+      ) : (
+        <>
+          <button onClick={() => setShowForm(true)}>Add New Submission</button>
+          <SubmissionTable
+            submissions={submissions}
+            onEdit={handleEdit}
+          />
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default App;
