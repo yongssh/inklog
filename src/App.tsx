@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { HiTable, HiPlus } from 'react-icons/hi';
@@ -40,6 +40,9 @@ const App: React.FC = () => {
 
   return (
     <div className="flex">
+      <div className="title-container"> 
+      <h2 className="app-title" >Submission Tracker</h2>
+      </div>
       <Sidebar aria-label="Sidebar" className="sidebar">
         <Sidebar.Items>
           <Sidebar.ItemGroup>
@@ -53,6 +56,99 @@ const App: React.FC = () => {
         </Sidebar.Items>
       </Sidebar>
       <main className="flex-1 ml-64 p-6">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <SubmissionTable
+                submissions={submissions}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            }
+          />
+          <Route
+            path="/add"
+            element={
+              <SubmissionForm
+                submission={editingSubmission}
+                onSave={handleSave}
+                onCancel={handleCancel}
+              />
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              <SubmissionManager
+                submissions={submissions}
+                onSave={handleSave}
+              />
+            }
+          />
+        </Routes>
+      </main>
+    </div>
+  );
+};
+
+export default App;
+*/// App.
+import React, { useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Sidebar from './components/Sidebar'; // Ensure the correct import path
+import { CiMenuBurger } from "react-icons/ci";
+
+import { Submission } from './models/Submission';
+import SubmissionTable from './components/SubmissionTable';
+import SubmissionForm from './components/SubmissionForm';
+import SubmissionManager from './components/SubmissionManager';
+import './styles/global.css'; // Ensure this is imported
+
+const App: React.FC = () => {
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false); // Track sidebar state
+  const navigate = useNavigate();
+
+  const handleSave = (submission: Submission) => {
+    setSubmissions(prev =>
+      prev.some(s => s.id === submission.id)
+        ? prev.map(s => (s.id === submission.id ? submission : s))
+        : [...prev, submission]
+    );
+    setEditingSubmission(null);
+    navigate('/'); // Navigate back to the table after saving
+  };
+
+  const handleEdit = (id: string) => {
+    setEditingSubmission(submissions.find(s => s.id === id) || null);
+    navigate(`/edit/${id}`);
+  };
+
+  const handleDelete = (id: string) => {
+    setSubmissions(prev => prev.filter(s => s.id !== id));
+  };
+
+  const handleCancel = () => {
+    setEditingSubmission(null);
+    navigate('/'); // Navigate back to the table after canceling
+  };
+
+  const toggleSidebar = () => setSidebarOpen(prev => !prev); // Toggle sidebar open/close
+
+  return (
+    <div className="flex">
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <div className={`sidebar-toggle-wrapper ${sidebarOpen ? 'hidden' : ''}`}>
+        <button  className="sidebar-toggle-button">
+          <CiMenuBurger size={24} onClick={toggleSidebar}/>
+        </button>
+      </div>
+      <main className={`main-content ${sidebarOpen ? 'sidebar-open' : ''} p-6`}>
+        <div className="title-container"> 
+          <h2 className="app-title">Submission Tracker</h2>
+        </div>
         <Routes>
           <Route
             path="/"
