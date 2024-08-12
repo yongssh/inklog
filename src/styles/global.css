@@ -176,3 +176,27 @@ body {
   height: 10;
   color: #ff0000;
 }
+
+/* SIDEBAR */
+
+
+.sidebar ul {
+  list-style-type: none; /* Remove bullets */
+  padding: 0;            /* Remove padding */
+  margin: 0;             /* Remove margin */
+}
+
+.sidebar li {
+  padding: 0;            /* Adjust as needed */
+  margin: 0;             /* Adjust as needed */
+}
+
+.sidebar a {
+  display: block;        /* Makes links fill the sidebar */
+  text-decoration: none; /* Remove underline */
+  color: inherit;        /* Inherit color from parent */
+}
+
+.sidebar a:hover {
+  background-color: #f0f0f0; /* Hover background color */
+}
