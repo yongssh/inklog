@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Submission } from '../models/Submission';
 import '../styles/global.css'; // Ensure this is imported
-import { useNavigate } from 'react-router-dom';
 
 interface SubmissionFormProps {
   submission: Submission | null;
@@ -16,7 +16,7 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
   const [responseDate, setResponseDate] = useState('');
   const [responseDecision, setResponseDecision] = useState('');
 
-  const navigate = useNavigate(); // Moved to the top
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (submission) {
@@ -26,7 +26,6 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
       setResponseDate(submission.responseDate ? submission.responseDate.toISOString().split('T')[0] : '');
       setResponseDecision(submission.responseDecision || '');
     } else {
-      // Reset form fields when adding a new submission
       setJournal('');
       setSubmissionDate('');
       setPieces('');
@@ -56,18 +55,16 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
     }
 
     const newSubmission = new Submission(
-      submission ? submission.id : Date.now().toString(), // Use a unique ID for new submissions
+      submission ? submission.id : Date.now().toString(),
       journal,
       parsedSubmissionDate,
       pieces.split(',').map(piece => piece.trim()),
-      parsedResponseDate,  // Can be undefined
-      responseDecision || undefined // Can be undefined
+      parsedResponseDate,
+      responseDecision || undefined
     );
 
     onSave(newSubmission);
-
-    // Redirect to the main screen after saving
-    navigate('/');
+    navigate('/'); // Redirect to the main screen after saving
   };
 
   return (

@@ -1,55 +1,30 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SubmissionTable from './SubmissionTable';
+// SubmissionManager.tsx
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import SubmissionForm from './SubmissionForm';
 import { Submission } from '../models/Submission';
 
-const SubmissionManager: React.FC = () => {
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
+interface SubmissionManagerProps {
+  submissions: Submission[];
+  onSave: (submission: Submission) => void;
+}
+
+const SubmissionManager: React.FC<SubmissionManagerProps> = ({ submissions, onSave }) => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const submission = submissions.find(s => s.id === id) || null;
 
-  const handleSave = (submission: Submission) => {
-    if (editingSubmission) {
-      // Update existing submission
-      setSubmissions(prevSubmissions =>
-        prevSubmissions.map(s => (s.id === submission.id ? submission : s))
-      );
-    } else {
-      // Add new submission
-      setSubmissions(prevSubmissions => [...prevSubmissions, submission]);
-    }
-    setEditingSubmission(null); // Reset form after save
-    navigate('/'); // Navigate back to the table view after saving
-  };
-
-  const handleEdit = (submission: Submission) => {
-    setEditingSubmission(submission);
-    navigate('/edit'); // Navigate to the form view when editing
-  };
-
-  const handleDelete = (id: string) => {
-    setSubmissions(prevSubmissions => prevSubmissions.filter(s => s.id !== id));
+  const handleCancel = () => {
+    navigate('/'); // Navigate back to the main screen on cancel
   };
 
   return (
     <div>
-      {editingSubmission ? (
-        <SubmissionForm
-          submission={editingSubmission}
-          onSave={handleSave}
-          onCancel={() => {
-            setEditingSubmission(null);
-            navigate('/');
-          }}
-        />
-      ) : (
-        <SubmissionTable
-          submissions={submissions}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      )}
+      <SubmissionForm
+        submission={submission}
+        onSave={onSave}
+        onCancel={handleCancel}
+      />
     </div>
   );
 };

@@ -1,8 +1,10 @@
+// components/SubmissionTable.tsx
 import React, { useState } from 'react';
 import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { getTheme } from '@table-library/react-table-library/baseline';
 import { Submission } from '../models/Submission';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../styles/global.css'; // Ensure this is imported
 
 // Import SVGs
@@ -11,12 +13,13 @@ import DeleteIcon from '../icons/delete.svg';
 
 interface SubmissionTableProps {
   submissions: Submission[];
-  onEdit: (submission: Submission) => void;
+  onEdit: (id: string) => void; // Expect ID here
   onDelete: (id: string) => void;
 }
 
 const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, onDelete }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Filter submissions based on search term
   const filteredSubmissions = submissions.filter((submission) =>
@@ -70,7 +73,7 @@ const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, 
             src={EditIcon}
             alt="Edit"
             className="icon-button edit-icon"
-            onClick={() => onEdit(item)}
+            onClick={() => navigate(`/edit/${item.id}`)} // Navigate with ID
           />
           <img
             src={DeleteIcon}
@@ -93,6 +96,7 @@ const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar"
+          style={{ width: '33%', margin: '0 auto', display: 'block' }} // Centered and takes 1/3 of the width
         />
       </div>
 
