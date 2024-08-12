@@ -35,7 +35,7 @@ const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
-*/import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import {
@@ -53,14 +53,13 @@ export function SidebarWithHamburger() {
 
   return (
     <div className="relative">
-      {/* Hamburger Button */}
+
       <Bars3Icon
         onClick={toggleSidebar}
         style={{ width: '20px', height: '20px' }}  // Set size directly
     className="text-gray-500 rounded-md hover:bg-gray-200 focus:outline-none absolute top-4 left-4 z-50 cursor-pointer"
       />
 
-      {/* Sidebar */}
       <Transition
         show={isOpen}
         enter="transition-all duration-300 ease-in-out"
@@ -105,3 +104,48 @@ export function SidebarWithHamburger() {
     </div>
   );
 }
+*/
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Bars3Icon } from '@heroicons/react/24/solid'; // Import the Bars3Icon
+
+interface SidebarProps {
+  // Add any props you want to use here
+}
+
+const Sidebar: React.FC<SidebarProps> = () => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  return (
+    <div className={`flex ${isExpanded ? 'w-64' : 'w-16'} bg-gray-800 text-white h-full transition-all duration-300`}>
+      <div className="flex flex-col w-full">
+        <button
+          onClick={toggleSidebar}
+          className="p-4 bg-gray-700 hover:bg-gray-600 rounded-r-lg focus:outline-none"
+        >
+          <Bars3Icon className="w-6 h-6" />
+        </button>
+        <div className={`flex flex-col items-center mt-4 ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
+          <Link to="/" className={`flex items-center p-2 transition-all ${isExpanded ? 'block' : 'hidden'} hover:bg-gray-600`}>
+            Home
+          </Link>
+          <Link to="/statistics" className={`flex items-center p-2 transition-all ${isExpanded ? 'block' : 'hidden'} hover:bg-gray-600`}>
+            Statistics
+          </Link>
+          <Link to="/sign-in" className={`flex items-center p-2 transition-all ${isExpanded ? 'block' : 'hidden'} hover:bg-gray-600`}>
+            Sign In
+          </Link>
+          <Link to="/submissions" className={`flex items-center p-2 transition-all ${isExpanded ? 'block' : 'hidden'} hover:bg-gray-600`}>
+            Submissions
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

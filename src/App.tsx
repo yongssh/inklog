@@ -64,7 +64,7 @@ const App: React.FC = () => {
 export default App;
 */import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {SidebarWithHamburger} from './components/Sidebar';
+import Sidebar from './components/Sidebar';
 import SubmissionTable from './components/SubmissionTable';
 import SubmissionForm from './components/SubmissionForm';
 import { Submission } from './models/Submission';
@@ -99,7 +99,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="flex">
-        <SidebarWithHamburger />
+        <Sidebar />
         <div className="flex-1 ml-64 p-6">
           <Routes>
             <Route

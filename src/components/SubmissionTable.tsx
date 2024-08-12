@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { getTheme } from '@table-library/react-table-library/baseline';
@@ -16,7 +16,15 @@ interface SubmissionTableProps {
 }
 
 const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, onDelete }) => {
-  const data = { nodes: submissions };
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter submissions based on search term
+  const filteredSubmissions = submissions.filter((submission) =>
+    submission.journal.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    submission.pieces.some(piece => piece.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  const data = { nodes: filteredSubmissions };
 
   const theme = useTheme([
     getTheme(),
@@ -76,7 +84,20 @@ const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, 
   ];
 
   return (
-    <CompactTable columns={COLUMNS} data={data} theme={theme} />
+    <div>
+      {/* Search Input */}
+      <div className="search-bar-container">
+        <input
+          type="text"
+          placeholder="Search by Journal or Piece"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+      </div>
+
+      <CompactTable columns={COLUMNS} data={data} theme={theme} />
+    </div>
   );
 };
 

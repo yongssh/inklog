@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Submission } from '../models/Submission';
 import '../styles/global.css'; // Ensure this is imported
+import { useNavigate } from 'react-router-dom';
 
 interface SubmissionFormProps {
   submission: Submission | null;
@@ -14,6 +15,8 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
   const [pieces, setPieces] = useState('');
   const [responseDate, setResponseDate] = useState('');
   const [responseDecision, setResponseDecision] = useState('');
+
+  const navigate = useNavigate(); // Moved to the top
 
   useEffect(() => {
     if (submission) {
@@ -60,7 +63,11 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
       parsedResponseDate,  // Can be undefined
       responseDecision || undefined // Can be undefined
     );
+
     onSave(newSubmission);
+
+    // Redirect to the main screen after saving
+    navigate('/');
   };
 
   return (
