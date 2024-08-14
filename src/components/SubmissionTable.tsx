@@ -4,24 +4,24 @@ import { CompactTable } from '@table-library/react-table-library/compact';
 import { useTheme } from '@table-library/react-table-library/theme';
 import { getTheme } from '@table-library/react-table-library/baseline';
 import { Submission } from '../models/Submission';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import '../styles/global.css'; // Ensure this is imported
+import { useNavigate } from 'react-router-dom';
+import '../styles/global.css';
 
-// Import SVGs
+// get SVGs
 import EditIcon from '../icons/edit.svg';
 import DeleteIcon from '../icons/delete.svg';
 
 interface SubmissionTableProps {
   submissions: Submission[];
-  onEdit: (id: string) => void; // Expect ID here
+  onEdit: (id: string) => void; 
   onDelete: (id: string) => void;
 }
 
 const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, onDelete }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
-  // Filter submissions based on search term
+  // filter submissions based on search term
   const filteredSubmissions = submissions.filter((submission) =>
     submission.journal.toLowerCase().includes(searchTerm.toLowerCase()) ||
     submission.pieces.some(piece => piece.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -73,7 +73,8 @@ const SubmissionTable: React.FC<SubmissionTableProps> = ({ submissions, onEdit, 
             src={EditIcon}
             alt="Edit"
             className="icon-button edit-icon"
-            onClick={() => navigate(`/edit/${item.id}`)} // Navigate with ID
+            // navigate with entry ID!!
+            onClick={() => navigate(`/edit/${item.id}`)} 
           />
           <img
             src={DeleteIcon}

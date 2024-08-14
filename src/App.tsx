@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import Sidebar from './components/Sidebar'; // Ensure the correct import path
+import Sidebar from './components/Sidebar'; 
 import { CiMenuBurger } from "react-icons/ci";
 import { Submission } from './models/Submission';
 import SubmissionTable from './components/SubmissionTable';
 import SubmissionForm from './components/SubmissionForm';
 import SubmissionManager from './components/SubmissionManager';
-import './styles/global.css'; // Ensure this is imported
+import './styles/global.css';
 
 const App: React.FC = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false); // Track sidebar state
+  // track sidebar state!!
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false); 
   const navigate = useNavigate();
 
   const handleSave = (submission: Submission) => {
@@ -21,7 +22,8 @@ const App: React.FC = () => {
         : [...prev, submission]
     );
     setEditingSubmission(null);
-    navigate('/'); // Navigate back to the table after saving
+     // navigate back to the submissions table after saving
+    navigate('/');
   };
 
   const handleEdit = (id: string) => {
@@ -35,7 +37,8 @@ const App: React.FC = () => {
 
   const handleCancel = () => {
     setEditingSubmission(null);
-    navigate('/'); // Navigate back to the table after canceling
+    // go back to the table after canceling
+    navigate('/'); 
   };
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev); // Toggle sidebar open/close

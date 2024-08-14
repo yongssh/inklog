@@ -15,7 +15,8 @@ const SubmissionManager: React.FC<SubmissionManagerProps> = ({ submissions, onSa
   const submission = submissions.find(s => s.id === id) || null;
 
   const handleCancel = () => {
-    navigate('/'); // Navigate back to the main screen on cancel
+    // if canceled, go back to sub stable
+    navigate('/'); 
   };
 
   return (

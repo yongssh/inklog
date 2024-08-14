@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Submission } from '../models/Submission';
-import '../styles/global.css'; // Ensure this is imported
+import '../styles/global.css';
 
 interface SubmissionFormProps {
   submission: Submission | null;
@@ -64,7 +64,8 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
     );
 
     onSave(newSubmission);
-    navigate('/'); // Redirect to the main screen after saving
+    // go back to sub table after submisison entry saved
+    navigate('/'); 
   };
 
   return (
