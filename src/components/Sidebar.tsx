@@ -39,11 +39,11 @@ const SideBar: React.FC<SideBarProps> = (props) => {
           {props.isOpen && 'Sign In'}
         </Link> */}
         <Link
-          to="/statistics"
+          to="/SignIn"
           className={`flex items-center p-4 transition-colors duration-300 ${props.isOpen ? 'block' : 'hidden'} hover:bg-gray-200 rounded-md text-lg`}
         >
           {props.isOpen && <HiArrowSmRight className="w-8 h-8 mr-3" />}
-          {props.isOpen && 'Statistics'}
+          {props.isOpen && 'Sign In'}
         </Link>
       </nav>
     </div>

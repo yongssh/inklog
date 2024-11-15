@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Submission } from '../models/Submission';
+import { getFirebaseToken } from "../firebase";
 import '../styles/global.css';
 
 interface SubmissionFormProps {
   submission: Submission | null;
   onSave: (submission: Submission) => void;
   onCancel: () => void;
+  userId: string; // Add userId to send it with the submission
 }
 
-const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onCancel }) => {
+const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onCancel, userId }) => {
   const [journal, setJournal] = useState('');
   const [submissionDate, setSubmissionDate] = useState('');
   const [pieces, setPieces] = useState('');
@@ -34,7 +36,7 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
     }
   }, [submission]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let parsedSubmissionDate: Date;
     let parsedResponseDate: Date | undefined;
 
@@ -63,9 +65,35 @@ const SubmissionForm: React.FC<SubmissionFormProps> = ({ submission, onSave, onC
       responseDecision || undefined
     );
 
-    onSave(newSubmission);
-    // go back to sub table after submisison entry saved
-    navigate('/'); 
+    try {
+      const token = await getFirebaseToken(); // Replace with actual Firebase token fetching method
+      const response = await fetch(`/api/users/${userId}/submissions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // Attach the token
+      },
+      body: JSON.stringify({
+        journalName: journal,
+        submissionDate: parsedSubmissionDate,
+        submittedPieces: pieces.split(',').map(piece => piece.trim()),
+        responseDate: parsedResponseDate,
+        responseStatus: responseDecision,
+      }),
+      });
+
+
+      if (!response.ok) {
+        throw new Error('Failed to add submission');
+      }
+
+      const savedSubmission = await response.json();
+      onSave(savedSubmission); // Notify parent component about the saved submission
+      navigate('/'); // Redirect to the submissions table or desired page
+    } catch (error) {
+      console.error('Error saving submission:', error);
+      // Optionally, you could show an error message to the user here
+    }
   };
 
   return (

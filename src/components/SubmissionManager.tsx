@@ -25,7 +25,7 @@ const SubmissionManager: React.FC<SubmissionManagerProps> = ({ submissions, onSa
         submission={submission}
         onSave={onSave}
         onCancel={handleCancel}
-      />
+        userId={''}      />
     </div>
   );
 };

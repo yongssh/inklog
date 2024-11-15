@@ -6,6 +6,7 @@ import { Submission } from './models/Submission';
 import SubmissionTable from './components/SubmissionTable';
 import SubmissionForm from './components/SubmissionForm';
 import SubmissionManager from './components/SubmissionManager';
+import SignInPage from './components/SignInPage';
 import './styles/global.css';
 
 const App: React.FC = () => {
@@ -72,8 +73,7 @@ const App: React.FC = () => {
               <SubmissionForm
                 submission={editingSubmission}
                 onSave={handleSave}
-                onCancel={handleCancel}
-              />
+                onCancel={handleCancel} userId={''}              />
             }
           />
           <Route
@@ -85,7 +85,9 @@ const App: React.FC = () => {
               />
             }
           />
+          <Route path="/signin" element={<SignInPage/>} />s
         </Routes>
+
       </main>
     </div>
   );

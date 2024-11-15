@@ -279,6 +279,19 @@ body {
 
 }
 
+/* Sign in page styling*/
+.sign-in-page{
+ align-items: center;
+ justify-items: center;
+ color: #0f3b38;
+
+}
+
+.sign-in-button{
+  font-family: "Lora";
+  background-color: #0f3b38;
+
+}
 /* Navigation links styling */
 .sidebar-links a {
   display: flex;
